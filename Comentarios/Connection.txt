@@ -1,0 +1,53 @@
+<?php
+
+
+    // * A classe Connection realiza a conexão direta com o banco de dados através do método open().
+    class Connection{
+        private function __construct(){}//Construtor Vazio
+        
+
+        //*O método open serve para ler o arquivo de configuração e com isso inicializar o banco de dados.
+        public static function open($arquivo){
+
+            //* Verifica se o arquivo ini existe no diretório.
+            if (file_exists("config/{$arquivo}.ini"))
+
+                // * o parse_ini_file lê o arquivo .ini e extrai as configurações em forma de array na variável $db.
+                $db = parse_ini_file("config/{$arquivo}.ini");
+            else
+                //* cria uma nova exceção(erro) caso o arquivo não exista.
+                throw new Exception('Arquivo não encontrado.');
+
+                
+            //* transcreve do array $db os dados de configuração do arquivo ini.
+            // * ?? é o operador de coalescência nula (isso existe?, senão terá esse valor, no caso, null))
+            $host =   $db['host'] ?? null;               
+            $port =   $db['port'] ?? null;
+            $dbname = $db['dbname'] ?? null;
+            $user =   $db['user'] ?? null;
+            $pass =   $db['pass'] ?? null;
+            $type =   $db['type'] ?? null;
+
+            // * escolhem, com a informação da variável $type, qual a configuração ideal para cada tipo de banco de dados.
+            switch($type){
+
+                // * o método PDO, nativo do PHP, é utilizado para realizar a conexão com o banco de dados utilizando os parâmetros do tipo de banco de dados, o host, o nome do banco de dados, a porta, o usuário e a senha.
+                // * Compatível com vários tipos de banco de dados.
+                case 'pgsql':
+                    $conn = new PDO("{$type}:host={$host};port={$port};dbname={$dbname};user={$user};password={$pass}");
+                    break;
+                case 'mysql':
+                    $conn = new PDO("{$type}:;host={$host};dbname={$dbname};port={$port}",$user,$pass);
+                    break;
+                case 'sqlite':
+                    $conn = new PDO("{$type}:dbname={$dbname}");
+                    break;
+            }
+
+            // * define os atributos de erro que a conexão pode exibir.
+            $conn->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
+
+            // * O estado da conexão é repassado para a variável $conn.
+            return $conn;         
+    }
+    }

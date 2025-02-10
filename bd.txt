@@ -1,0 +1,15 @@
+CREATE SCHEMA IF NOT EXISTS `exemplo` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci ;
+USE `exemplo` ;
+
+-- -----------------------------------------------------
+-- Table `exemplo`.`user_example`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `exemplo`.`user_example` (
+  `id` INT NOT NULL,
+  `email` VARCHAR(100) NOT NULL,
+  `senha` VARCHAR(100) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `email` (`email` ASC) VISIBLE)
+ENGINE = MyISAM
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;

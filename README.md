@@ -10,6 +10,6 @@ Os arquivos '.txt', na pasta 'Comentarios', possuem comentários que fiz sobre o
 # TUTORIAL DE IMPLEMENTAÇÃO:
 O arquivo 'bd.txt', contém o código SQL para gerar o banco de dados utilizado. (Utilizei a ferramenta forward engineering do mysql workbench).
 
-Após a execução do SQL, verifique se as informações do 'arquivo.ini' (localizado em ../conexao/config) estão corretas. ;
+Após a execução do SQL, verifique se as informações do 'arquivo.ini' (localizado em ../conexao/config) estão corretas.
 
 Desta forma, ao acessar o index.html (localizado em ../visual), utilizando o WAMP Server ou o XAMPP, o projeto deve funcionar.# SimplePDO

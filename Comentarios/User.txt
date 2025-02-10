@@ -1,0 +1,77 @@
+<?php
+
+//requisitar o arquivo que realiza a conexão com o banco.
+require_once 'Connection.php';
+
+
+class User
+{
+    
+    private  $pdo;
+
+    //construtor da classe User.
+    public function __construct()
+    {
+        //o atributo $pdo vira uma instância da classe Connection
+        $this->pdo = new Connection();
+        $this->pdo = $this->pdo->open('arquivo');
+    }
+
+    //função para verificar a existência do email no banco. 
+    public function verificarEmail($email)
+    {
+
+        if ($email) {
+            //por padrão o método volta falso.
+            $existe = false;
+
+            //$sql recebe o comando sql, nesse caso de consulta.
+            $sql = "SELECT * FROM user_example WHERE email = '{$email}'";
+
+            //pdo->query() é uma função do PDO que executa uma única instrução.
+            //fetchAll() retorna os resultados como array.
+            $resultados = $this->pdo->query($sql)->fetchAll();
+
+            //um foreach no array $resultados.
+            foreach ($resultados as $res) {
+                if($res){
+                    //se algum registro retornar true, então existe no banco.
+                    $existe = true;
+                }
+            }
+
+            return $existe;
+        } else {
+            print("Erro: não foi possível validar o email!");
+        }
+    }
+
+
+    //A função verificarUser() funciona com o mesmo princípio de verificarEmal();
+    public function verificarUser($email, $senha)
+    {
+        //antes de verificar a senha, verificamos a existencia do email.
+        if($this->verificarEmail($email)){
+            if ($senha) {
+            
+                $existe = false;
+    
+                $sql = "SELECT * FROM user_example WHERE email = '{$email}' AND senha = '{$senha}'";
+                $resultados = $this->pdo->query($sql)->fetchAll();
+    
+                foreach ($resultados as $res) {
+                    if($res){
+                        $existe = true;
+                    }
+                }
+    
+                return $existe;
+            } else {
+                print("Erro: não foi possível validar a senha!");
+            }
+
+
+        }
+        
+    }
+}
